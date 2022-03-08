@@ -1,32 +1,13 @@
 import React, { useState } from 'react';
-import { Container, Row, Stack, Col } from 'react-bootstrap';
-import { Card } from 'react-bootstrap';
+import { Container, Row, Stack } from 'react-bootstrap';
 
 import './App.css';
+
 import { AppBar } from './components/AppBar';
-import {Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend} from 'chart.js';
-import { Line } from 'react-chartjs-2';
 import { RenderSimulationInfo } from './components/RenderSimulationInfo';
 import { SnackBar } from './components/SnackBar';
 import { ChartCard } from './components/ChartCard';
 
-
-ChartJS.register(
-	CategoryScale,
-  	LinearScale,
-  	PointElement,
-  	LineElement,
-  	Title,
-  	Tooltip,
-  	Legend
-);
 
 const defaultGraphData = [
 	{
@@ -82,7 +63,7 @@ function App() {
 	const [extractedData, setExtractedData] = useState([])
 
 	const setDataInDiscrete = (childData, newOptions, extractedData) => {
-		
+
 		if (childData != null) {
 			setData(childData);
 		}
