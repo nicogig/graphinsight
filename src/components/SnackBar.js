@@ -53,6 +53,10 @@ export function SnackBar({childFunc, oldData}) {
                 }
             }]
             var newData = oldData.concat(newParams)
+            if (newParams.accuracies.length <= 1) {
+                childFunc(null, null, newData)
+                return
+            }
             var datasetsDisc = []
             var datasetsPre = []
             for (var i = 0; i < newData.length; i++) {

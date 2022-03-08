@@ -23,6 +23,10 @@ export function OtherDataTable({otherData}) {
                         <td>kV</td>
                         <td>{otherData.simulation_parameters.k_V}</td>
                     </tr>
+                    <tr>
+                        <td>Nonidealities</td>
+                        <td>{otherData.simulation_parameters.nonidealities}</td>
+                    </tr>
                     </tbody>
                 </Table>
             </Card>

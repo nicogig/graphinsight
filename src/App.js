@@ -15,6 +15,7 @@ import {Chart as ChartJS,
 import { Line } from 'react-chartjs-2';
 import { RenderSimulationInfo } from './components/RenderSimulationInfo';
 import { SnackBar } from './components/SnackBar';
+import { ChartCard } from './components/ChartCard';
 
 
 ChartJS.register(
@@ -81,8 +82,14 @@ function App() {
 	const [extractedData, setExtractedData] = useState([])
 
 	const setDataInDiscrete = (childData, newOptions, extractedData) => {
-		setData(childData);
-		setOptions(newOptions);
+		
+		if (childData != null) {
+			setData(childData);
+		}
+		if (newOptions != null) {
+			setOptions(newOptions);
+		}	
+		
 		setExtractedData(extractedData);
 	}
 
@@ -97,20 +104,7 @@ function App() {
 					</Container>
 					<Container className="p-4 mb-4 bg-light rounded-3">
 						<Row>
-							<Col>
-								<Card>
-									<Card.Body>
-										<Line options={options[0]} data={data[0]} />
-									</Card.Body>
-								</Card>
-							</Col>
-							<Col>
-								<Card>
-									<Card.Body>
-										<Line options={options[1]} data={data[1]} />
-									</Card.Body>
-								</Card>
-							</Col>
+							{data.map((value, index) => <ChartCard key={index} options={options[index]} data={value} />)}
 						</Row>
 					</Container>
 					<Container className="p-4 mb-4 bg-light rounded-3">
