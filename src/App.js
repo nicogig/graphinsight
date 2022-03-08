@@ -83,7 +83,7 @@ function App() {
 					<Container className="p-4 mb-4 bg-light rounded-3">
 						<SnackBar childFunc={setDataInDiscrete} oldData={extractedData} />
 					</Container>
-					<Container className="p-4 mb-4 bg-light rounded-3">
+					<Container className="p-5 mb-4 bg-light rounded-3">
 						<Row>
 							{data.map((value, index) => <ChartCard key={index} options={options[index]} data={value} />)}
 						</Row>

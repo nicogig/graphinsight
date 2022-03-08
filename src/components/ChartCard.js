@@ -19,7 +19,7 @@ export function ChartCard({options, data}) {
         <Col>
             <Card>
                 <Card.Body>
-                    <Line options={options} data={data} />
+                    <Line options={options} data={data} height={250} />
                 </Card.Body>
             </Card>
         </Col>

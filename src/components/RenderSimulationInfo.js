@@ -8,6 +8,7 @@ function FullSimInfo({extractedData, index}) {
     if (extractedData.accuracies.length <= 1) {
         return (
             <div>
+                <br />
                 <h4>Simulation {index+1}</h4>
                 <br />
                 <Row xs={2} md={2} className="g-4">
