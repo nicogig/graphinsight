@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Card } from "react-bootstrap";
+import { Container, Col, Card, Row } from "react-bootstrap";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -16,13 +16,11 @@ ChartJS.register(
 export function ChartCard({options, data}) {
 
     return (
-        <Col>
-            <Card>
-                <Card.Body>
-                    <Line options={options} data={data} height={250} />
-                </Card.Body>
-            </Card>
-        </Col>
+            <div>
+                        {
+                            <Col><Line options={options} data={data} height={100} /></Col>
+                        }
+            </div>
     );
 
 }

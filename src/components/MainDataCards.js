@@ -16,9 +16,12 @@ export function MainDataCards({data}) {
                 <Col>
                     <SmallCard main={data.simulation_parameters.noise_variance} description={'Noise Variance'}/>
                 </Col>
-                <Col>
-                    <SmallCard main={data.simulation_parameters.number_conductance_levels} description={'No. of Conductance Levels'}/>
-                </Col>
+                {
+                    data.simulation_parameters.discretisation &&
+                    <Col>
+                        <SmallCard main={data.simulation_parameters.number_conductance_levels} description={'No. of Conductance Levels'}/>
+                    </Col>
+                }
             </Row>
         );
     } else {

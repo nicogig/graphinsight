@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
-export function SnackBar({childFunc, oldData}) {
+export function SnackBar({childFunc, oldData, oldGraphData, oldOptions}) {
     
     const chartBgColors = [
         'rgba(255, 99, 132, 0.2)',
@@ -23,116 +23,81 @@ export function SnackBar({childFunc, oldData}) {
 
     const fileUpload = (e) => {
         const file = e.target.files[0];
-        
+
         getFile(file).then(result => {
-            var newParams = JSON.parse(result)
+            var newParams = JSON.parse(result);
             var scaling = 1 / (newParams.accuracies.length - 1)
             var percentages = Array.from({length: newParams.accuracies.length}, (v, k) => Math.round(k*scaling*100))
-            var newOptions = [{
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Discretised Values',
-                    },
-                }
-            },
-            {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Pre-Discretisation Values',
-                    },
-                }
-            }]
+
             var newData = oldData.concat(newParams)
             if (newParams.accuracies.length <= 1) {
                 childFunc(null, null, newData)
                 return
             }
-            var datasetsDisc = []
-            var datasetsPre = []
-            for (var i = 0; i < newData.length; i++) {
-                datasetsDisc.push({
-                    label: 'Simulation ' + (i+1),
-                    data: newData[i].accuracies,
-                    borderColor: chartBorderColor[i % chartBorderColor.length],
-                    backgroundColor: chartBgColors[i % chartBgColors.length],
-                })
-                datasetsPre.push({
-                    label: 'Simulation ' + (i+1),
-                    data: newData[i].pre_discretisation_accuracies,
-                    borderColor: chartBorderColor[i % chartBorderColor.length],
-                    backgroundColor: chartBgColors[i % chartBgColors.length],
-                })
+
+            var newGraphData = {
+                "conductance_drifting": {
+                    title: "Cond. Drifting Accuracies",
+                    graph: {
+                        labels: percentages,
+                        datasets: []
+                    }},
+                "discretisation_pre": {
+                    title: "Pre Discretisation Accuracies",
+                    graph: {
+                        labels: percentages,
+                        datasets: []
+                    }},
+                "discretisation_post": {
+                    title: "Post Discretisation Accuracies",
+                    graph: {
+                        labels: percentages,
+                        datasets: []
+                    }},
             }
-            var newGraphData = [{
-                labels: percentages,
-                datasets: datasetsDisc
-            },
-            {
-                labels: percentages,
-                datasets: datasetsPre
-            }]
-            console.log(newData)
-            childFunc(newGraphData, newOptions, newData);
-            console.log("file", newData);
+
+            for (var i = 0; i < newData.length; i++) {
+
+                switch (newData[i]["simulation_parameters"]["discretisation"]) {
+                    case false:
+                        newGraphData["conductance_drifting"]["graph"]["datasets"].push({
+                            label: 'Simulation ' + (i+1),
+                            data: newParams.accuracies,
+                            borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
+                            backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
+                        })
+                        break;
+                    case true:
+                        newGraphData["discretisation_pre"]["graph"]["datasets"].push({
+                            label: 'Simulation ' + (i+1),
+                            data: newParams.pre_discretisation_accuracies,
+                            borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
+                            backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
+                        })
+                        newGraphData["discretisation_post"]["graph"]["datasets"].push({
+                            label: 'Simulation ' + (i+1),
+                            data: newParams.accuracies,
+                            borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
+                            backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
+                        })
+                        break;
+
+
+                }
+
+            }
+            childFunc(newGraphData, null, newData);
+
+
+
         })
+
     }
 
     let button;
     if (oldData.length > 0) {
         button = <Button variant="danger" onClick={() => {
-            var stockData = [];
-            var stockGraph = [{
-                labels: [0],
-                datasets: [{
-                  label: 'Awaiting File Upload',
-                  data: [0],
-                  borderColor: 'rgb(255, 99, 132)',
-                  backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                }]},
-                {
-                  labels: [0],
-                  datasets: [{
-                    label: 'Awaiting File Upload',
-                    data: [0],
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                  }]
-                }
-              ];
-            var stockOptions = [{
-                responsive: true,
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                  title: {
-                    display: false,
-                    text: 'Please Upload a File to get Started',
-                  },
-                },},
-                {
-                  responsive: true,
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                    title: {
-                      display: false,
-                      text: 'Please Upload a File to get Started',
-                    },
-                  },
-              }];
-            childFunc(stockGraph, stockOptions, stockData);
+            childFunc("reset");
             document.getElementById("fileUploadForm").reset();
         }}>Clear</Button>
     }
