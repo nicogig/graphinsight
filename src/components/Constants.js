@@ -12,7 +12,24 @@ const blankGraphOptions = {
             title: {
                 display: false
             }
+        },
+    scales: {
+        x: {
+            min: 0,
+            title: {
+                display: true,
+                text: '% of Memristive devices stuck'
+            }
+        },
+        y: {
+            min: 0,
+            max: 1.0,
+            title: {
+                display: true,
+                text: 'Neural Network accuracy'
+            }
         }
+    }
 }
 
 
@@ -27,11 +44,15 @@ const Constants = {
         "discretisation_post": {
                  title: "Post Discretisation Accuracies",
                  graph: blankGraphData},
+        "combined": {
+                 title: "Combined Graphs",
+                 graph: blankGraphData}
         },
     defaultGraphOptions : {
         "conductance_drifting": blankGraphOptions,
         "discretisation_pre": blankGraphOptions,
         "discretisation_post": blankGraphOptions,
+        "combined": blankGraphOptions
         }
 
 }

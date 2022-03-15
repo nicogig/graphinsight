@@ -54,6 +54,12 @@ export function SnackBar({childFunc, oldData, oldGraphData, oldOptions}) {
                         labels: percentages,
                         datasets: []
                     }},
+                "combined": {
+                        title: "Combined Graphs",
+                        graph: {
+                            labels: percentages,
+                            datasets: []
+                        }},
             }
 
             for (var i = 0; i < newData.length; i++) {
@@ -62,7 +68,13 @@ export function SnackBar({childFunc, oldData, oldGraphData, oldOptions}) {
                     case false:
                         newGraphData["conductance_drifting"]["graph"]["datasets"].push({
                             label: 'Simulation ' + (i+1),
-                            data: newParams.accuracies,
+                            data: newData[i].accuracies,
+                            borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
+                            backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
+                        })
+                        newGraphData["combined"]["graph"]["datasets"].push({
+                            label: 'Simulation ' + (i+1) + ' (Cond. Drifting)',
+                            data: newData[i].accuracies,
                             borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
                             backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
                         })
@@ -70,13 +82,25 @@ export function SnackBar({childFunc, oldData, oldGraphData, oldOptions}) {
                     case true:
                         newGraphData["discretisation_pre"]["graph"]["datasets"].push({
                             label: 'Simulation ' + (i+1),
-                            data: newParams.pre_discretisation_accuracies,
+                            data: newData[i].pre_discretisation_accuracies,
                             borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
                             backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
                         })
                         newGraphData["discretisation_post"]["graph"]["datasets"].push({
                             label: 'Simulation ' + (i+1),
-                            data: newParams.accuracies,
+                            data: newData[i].accuracies,
+                            borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
+                            backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
+                        })
+                        newGraphData["combined"]["graph"]["datasets"].push({
+                            label: 'Simulation ' + (i+1) + ' (Post-Disc)',
+                            data: newData[i].accuracies,
+                            borderColor: chartBorderColor[(chartBorderColor.length-i) % chartBorderColor.length],
+                            backgroundColor: chartBgColors[(chartBorderColor.length-i) % chartBgColors.length],
+                        })
+                        newGraphData["combined"]["graph"]["datasets"].push({
+                            label: 'Simulation ' + (i+1) + ' (Pre-Disc)',
+                            data: newData[i].pre_discretisation_accuracies,
                             borderColor: chartBorderColor[(i+1) % chartBorderColor.length],
                             backgroundColor: chartBgColors[(i+1) % chartBgColors.length],
                         })
